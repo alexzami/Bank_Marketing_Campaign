@@ -44,7 +44,7 @@ def near_miss (x_train,y_train):
     
     return X, y
 
-bank = pd.read_csv(r'C:\Users\30693\Desktop\bank\bank-additional-full.csv', sep=';')
+bank = pd.read_csv(r'data\bank-additional-full.csv', sep=';')
 bank_X = bank.iloc[:,[i for i in range(0,len(bank.columns)-1)]]
 bank_X = bank_X.drop('duration', axis=1)
 bank_y = bank.iloc[:,-1]
@@ -59,17 +59,14 @@ for cat in categorial_columns:
  
 bank_y = pd.get_dummies(bank_y, prefix = ['y'], drop_first = True)
 
-
 x_train, x_test, y_train, y_test = train_test_split(bank_X, bank_y, stratify = bank_y, train_size = 0.7, random_state = 0)
 #Smote - tomek links
 x_train,y_train = smote_tomek(x_train,y_train)
 
 #Easy Ensemble
 # easy_ensemble = easy_ensemble_clasiffication()
-
 #Near Miss
 # x_train,y_train = near_miss(x_train,y_train)
-
 
 scaler = MinMaxScaler()
     
