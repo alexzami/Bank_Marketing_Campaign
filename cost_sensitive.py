@@ -140,7 +140,7 @@ def roullete(x_train,y_train,x_test,rounds = 20):
     prob_list = []
     for i in range(rounds):
         sampler = RandomUnderSampler(sampling_strategy={0: 600, 1: 1500}, random_state=i)
-        X_rs, y_rs = sampler.fit_sample(X_train, y_train)
+        X_rs, y_rs = sampler.fit_sample(x_train, y_train)
         clf = RandomForestClassifier(random_state=0, n_estimators=100)
         model = clf.fit(X_rs, y_rs)
         prob_test = model.predict_proba(x_test)
