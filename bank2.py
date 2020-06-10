@@ -20,21 +20,20 @@ from imblearn.over_sampling import BorderlineSMOTE
 from imblearn.under_sampling import TomekLinks,NearMiss
 
 def smote_tomek(x_train,y_train):
-    oversample = BorderlineSMOTE(sampling_strategy = 0.5,random_state = 0,k_neighbors = 5,m_neighbors=10,n_jobs=-1,kind = 'borderline-1')
+    oversample = BorderlineSMOTE(sampling_strategy = 0.5, random_state = 0, k_neighbors = 5, m_neighbors=10, n_jobs=-1, kind = 'borderline-1')
     X, y = oversample.fit_resample(x_train, y_train)
     
     tom_lin = TomekLinks(sampling_strategy='majority', n_jobs = -1)
     X, y = tom_lin.fit_resample(X, y)
-# print(len([i for i in y_train.values if i==1]))
-# print(len([i for i in y.values if i==1]))
-# print(len(y_train))
-# print(len(y))
+    # print(len([i for i in y_train.values if i==1]))
+    # print(len([i for i in y.values if i==1]))
+    # print(len(y_train))
+    # print(len(y))
     return X,y    
 
-def easy_ensemble_clasiffication():
-    logmodel = LogisticRegression(max_iter = 600) 
-    easy_ensemble = imblearn.ensemble.EasyEnsembleClassifier(n_estimators=3,base_estimator=logmodel,sampling_strategy='majority',n_jobs=-1)
+def easy_ensemble_clasiffication(classifier):
     
+    easy_ensemble = imblearn.ensemble.EasyEnsembleClassifier(n_estimators=3, base_estimator=classifier, sampling_strategy='majority', n_jobs=-1)
     return(easy_ensemble)
 
 def near_miss (x_train,y_train):
@@ -60,10 +59,14 @@ for cat in categorial_columns:
 bank_y = pd.get_dummies(bank_y, prefix = ['y'], drop_first = True)
 
 x_train, x_test, y_train, y_test = train_test_split(bank_X, bank_y, stratify = bank_y, train_size = 0.7, random_state = 0)
+
+
+
 #Smote - tomek links
 x_train,y_train = smote_tomek(x_train,y_train)
 
 #Easy Ensemble
+# logmodel = LogisticRegression(max_iter = 600) 
 # easy_ensemble = easy_ensemble_clasiffication()
 #Near Miss
 # x_train,y_train = near_miss(x_train,y_train)

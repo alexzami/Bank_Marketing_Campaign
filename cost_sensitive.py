@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jun  8 11:43:21 2020
-
-@author: zisis
-"""
 import numpy as np
 import pandas as pd 
 from sklearn.model_selection import train_test_split
@@ -19,7 +13,7 @@ from imblearn.over_sampling import RandomOverSampler
 from collections import Counter
 
 
-bank = pd.read_csv('Desktop/ΠΜΣ ΤΝ/MACHINE LEARNING II/bank-additional-full.csv',sep = ';')
+bank = pd.read_csv(r'data\bank-additional-full.csv', sep=';')
 bank_X = bank.iloc[:,[i for i in range(0,len(bank.columns)-1)]]
 # bank_y = bank.iloc[:,-1]
 bank_X = bank_X.drop('duration', axis=1) # giati to kanoume drop auto ?
@@ -42,15 +36,18 @@ bank_y = bank_y["label"].values
 X_train, X_test, y_train, y_test = train_test_split(bank_X, bank_y, test_size=0.3, random_state=0)
 
 
-
-fp = np.full((y_test.shape[0],1), 1)
-fn = np.full((y_test.shape[0],1), 10)
-tp = np.zeros((y_test.shape[0],1))
-tn = np.zeros((y_test.shape[0],1))
-cost_matrix = np.hstack((fp, fn, tp, tn))
+def create_cost_matrix(y_test):
+  fp = np.full((y_test.shape[0],1), 1)
+  fn = np.full((y_test.shape[0],1), 10)
+  tp = np.zeros((y_test.shape[0],1))
+  tn = np.zeros((y_test.shape[0],1))
+  cost_matrix = np.hstack((fp, fn, tp, tn))
+  return cost_matrix
 
 
 #------------ baeysian optimization + Calibration ---------------------
+cost_matrix = create_cost_matrix(y_test)
+
 
 print("no cost minimization")
 clf = RandomForestClassifier(random_state=0, n_estimators=100)
