@@ -10,6 +10,7 @@ from IPython.display import SVG
 from IPython.display import display                               
 from ipywidgets import interactive
 from sklearn.metrics import accuracy_score
+from Helper import Helper
 
 import os
 os.environ["PATH"] += os.pathsep + "C:\\Users\\user_a\\Anaconda3\\pkgs\\graphviz-2.38-hfd603c8_2\\Library\\bin"
@@ -70,18 +71,20 @@ class Interpretability:
     """
     Decision trees
     """
-    def plot_DecisionTree(self, depth, x_train, y_train, x_test, y_test, feature_names, plotNamePath="./results/BankMarket"):
+    def plot_DecisionTree(self, depth, x_train, y_train_new, y_pred, x_test, y_test, feature_names, plotNamePath="./results/BankMarket"):
         estimator = DecisionTreeClassifier(random_state = 0 , criterion = 'gini', max_depth = depth)
-        estimator.fit(x_train, y_train)
+        estimator.fit(x_train, y_train_new)
         dot_data = export_graphviz(estimator, out_file=None, feature_names=feature_names, class_names=['yes','no'], filled = True)
         graph = graphviz.Source(dot_data) 
         graph.render(plotNamePath)
-        print(accuracy_score(y_test, estimator.predict(x_test)))
+        print("Fidelity",accuracy_score(y_pred, estimator.predict(x_test)))
+        h = Helper()
+        h.printResults2(y_test, estimator.predict(x_test))
         return estimator
 
-    def plot_DecisionTree_feature_importance(self, depth, x_train, y_train, feature_names):
+    def plot_DecisionTree_feature_importance(self, depth, x_train, y_train_new, feature_names):
         estimator = DecisionTreeClassifier(random_state = 0, criterion = 'gini', max_depth = depth)
-        estimator.fit(x_train, y_train)
+        estimator.fit(x_train, y_train_new)
         weights = estimator.feature_importances_
         model_weights = pd.DataFrame({ 'features': list(feature_names),'weights': list(weights)})
         model_weights = model_weights.sort_values(by='weights', ascending=False)

@@ -119,36 +119,36 @@ depth = 4
 #----------------------------------------------------------------------------------------------------
 # # Comments: Mathainoume ena black box model
 # print("*****BLACK BOX EXPLANATION*****")
-# classifier = RandomForestClassifier(n_estimators = 1000, criterion = 'entropy', random_state = 0)
-# classifier.fit(x_train, y_train)
-# y_pred = classifier.predict(x_test)
-# print("Random Forests Performance:")
-# print(accuracy_score(y_test,y_pred))
+classifier = RandomForestClassifier(n_estimators = 1000, criterion = 'entropy', random_state = 0)
+classifier.fit(x_train, y_train)
+y_pred = classifier.predict(x_test)
+print("Random Forests Performance:")
+print(accuracy_score(y_test,y_pred))
 
-# # Obtain predictions of the black box on the training set (could perhaps better be done via cross-validation)
-# new_x_train = x_train
-# new_y_train = classifier.predict(x_train)
+# Obtain predictions of the black box on the training set (could perhaps better be done via cross-validation)
+new_x_train = x_train
+new_y_train = classifier.predict(x_train)
 
-# # epekshghsh xrhsimopoiontas dendra
-# depth = 4
-# # interpr.plot_DecisionTree(depth, x_train, new_y_train, x_test, y_test, feature_names, plotNamePath="results/blackbox")
+# epekshghsh xrhsimopoiontas dendra
+depth = 4
+# interpr.plot_DecisionTree(depth, x_train, new_y_train, x_test, y_test, feature_names, plotNamePath="results/blackbox")
 
-# # epekshghsh xrhsimopoiontas logistic regression
-# """
-# Logistic Regression
-# """
-# lin_model = LogisticRegression(solver="newton-cg",penalty='l2',max_iter=1000,C=100,random_state=0)
-# lin_model.fit(x_train, new_y_train)
-# y_pred = lin_model.predict(x_test)
-# predicted_proba_test = lin_model.predict_proba(x_test)
-# h.printResults(y_pred, y_test)
+# epekshghsh xrhsimopoiontas logistic regression
+"""
+Logistic Regression
+"""
+lin_model = LogisticRegression(solver="newton-cg",penalty='l2',max_iter=1000,C=100,random_state=0)
+lin_model.fit(x_train, new_y_train)
+y_pred = lin_model.predict(x_test)
+predicted_proba_test = lin_model.predict_proba(x_test)
+h.printResults(y_pred, y_test)
 
-# """
-# plot the weights (coefficient of the features = feature importance)
-# Global interpretability
-# """
-# feature_names = bank_X.columns.values
-# interpr.plotFeaturesCoefficientGlobal(lin_model, feature_names)
+"""
+plot the weights (coefficient of the features = feature importance)
+Global interpretability
+"""
+feature_names = bank_X.columns.values
+interpr.plotFeaturesCoefficientGlobal(lin_model, feature_names)
 
 
 #----------------------------------------------------------------------------------------------------
