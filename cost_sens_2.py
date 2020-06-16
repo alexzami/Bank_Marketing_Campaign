@@ -221,6 +221,14 @@ interpr.plot_DecisionTree_feature_importance(depth, X_train, y_train, feature_na
 #---------------------------------------------------------------------------
 
 #--------- GRID SEARCH -----------------------
+
+
+fp = np.full((y_test.shape[0],1), -3)
+fn = np.zeros((y_test.shape[0],1))
+tp = np.full((y_test.shape[0],1),200)
+tn = np.zeros((y_test.shape[0],1))
+cost_matrix_cv = np.hstack((fp, fn, tp, tn))[:2621]
+
 def cost_loss_score(y_test, pred_test):
     return cost_loss(y_test, pred_test, cost_matrix_cv)
 
