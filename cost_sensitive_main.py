@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split,GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import make_scorer
-from interpretability_plots import Interpretability
+from Interpretability import Interpretability
 # from sklearn 
 
 # load dataset --------------------------------------------------
