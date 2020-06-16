@@ -20,7 +20,7 @@ class Helper:
       plt.title(title)
       plt.xlabel('True output' )
       plt.ylabel('Predicted output')    
-      plt.show()    
+      plt.show()
       
   
   def printResults(self, test_y, y_pred):
@@ -44,10 +44,10 @@ class Helper:
       geometric_mean = imblearn.metrics.geometric_mean_score(y_test,y_pred)
       balanced_accuracy = metrics.balanced_accuracy_score(y_test,y_pred) 
        
-       
       print("Recall: "+str(round((recall*100),2))+"%")
       print("Precision: "+str(round((precision*100),2))+"%")
       print("Accuracy: "+str(round((accuracy*100),2))+"%")
       print("F1: "+str(round((f1*100),2))+"%")
       print("Geometric Mean: "+str(round((geometric_mean*100),2))+"%")
       print("Balanced Accuracy: "+str(round((balanced_accuracy*100),2))+"%")
+      

@@ -20,8 +20,6 @@ class Interpretability:
     def __init__(self):
         print("Interpretability")
         pass
-
-
     """
     Logistic Regression
     """

@@ -48,8 +48,6 @@ def near_miss (x_train,y_train):
     return X, y
 
 
-
-
 bank = pd.read_csv(r'.\data\bank-additional-full.csv', sep=';')
 bank_X = bank.iloc[:,[i for i in range(0,len(bank.columns)-1)]]
 # bank_y = bank.iloc[:,-1]
@@ -61,7 +59,6 @@ numerical_cols = bank_X._get_numeric_data().columns
 categorial_columns = list(set(all_columns) - set(numerical_cols))
 bank_X.job.value_counts()
 
-# TODO: na dokimasoume one hot encoding
 labelencoder_X = LabelEncoder()
 for col in categorial_columns:
     bank_X[col] = labelencoder_X.fit_transform(bank_X[col])
@@ -72,33 +69,36 @@ bank_y = bank_y["label"].values
 
 x_train, x_test, y_train, y_test = train_test_split(bank_X, bank_y, stratify = bank_y, train_size = 0.7, random_state = 0)
 
-classifier = svm.SVC(kernel = 'rbf',C=1000,gamma=0.001) 
-#classifier = LogisticRegression(max_iter = 10000,C = 100) 
+#classifier = svm.SVC(kernel = 'rbf',C=1000,gamma=0.001) 
+classifier = LogisticRegression(max_iter = 10000, C = 0.1) 
 
-easy_ensemble = imblearn.ensemble.EasyEnsembleClassifier(n_estimators=35, base_estimator=classifier, sampling_strategy='majority', n_jobs=-1)
+#easy_ensemble = imblearn.ensemble.EasyEnsembleClassifier(n_estimators=35, base_estimator=classifier, sampling_strategy='majority', n_jobs=-1)
 
-#oversample = BorderlineSMOTE(sampling_strategy = 0.4,n_jobs=-1, kind = 'borderline-1')
-#x_train, y_train = oversample.fit_resample(x_train, y_train)
-#tom_lin = TomekLinks(sampling_strategy = 'majority',n_jobs = -1)
-#x_train, y_train = tom_lin.fit_resample(x_train, y_train)
+oversample = BorderlineSMOTE(sampling_strategy = 0.5,n_jobs=-1, kind = 'borderline-1')
+x_train, y_train = oversample.fit_resample(x_train, y_train)
+tom_lin = TomekLinks(sampling_strategy = 'majority',n_jobs = -1)
+x_train, y_train = tom_lin.fit_resample(x_train, y_train)
 
 
-easy_ensemble.fit(x_train,y_train)
-y_pred = easy_ensemble.predict(x_test)
+classifier.fit(x_train,y_train)
+y_pred = classifier.predict(x_test)
 
 
 h.printResults2(y_test, y_pred)
 h.plotConfusionMatrix(y_test, y_pred, norm=True)
 h.plotConfusionMatrix(y_test, y_pred, norm=False)
 
+#White-box explanation
+feature_names = bank_X.columns.values
+interpr.plotFeaturesCoefficientGlobal(classifier, feature_names)
 
 
 new_x_train = x_train
-new_y_train = easy_ensemble.predict(x_train)
+new_y_train = classifier.predict(x_train)
 
 feature_names = bank_X.columns.values
 
-depth = 4
+depth = 3
 interpr.plot_DecisionTree(depth, new_x_train, new_y_train, y_pred,  x_test, y_test, feature_names)
 interpr.plot_DecisionTree_feature_importance(depth, new_x_train, new_y_train, feature_names)
 

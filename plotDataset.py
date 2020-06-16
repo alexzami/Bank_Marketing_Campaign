@@ -47,23 +47,3 @@ for cat_column in categorial_columns:
     counter += 1
 
 plt.show()
-
-
-num_columns = ['day_of_week', 'campaign', 'pdays', 'previous']
-
-fig, axs = plt.subplots(2, 3, sharex=False, sharey=False, figsize=(20, 15))
-
-counter = 0
-for num_column in num_columns:
-    
-    trace_x = counter // 3
-    trace_y = counter % 3
-    
-    axs[trace_x, trace_y].hist(bank_X[num_column])
-    
-    axs[trace_x, trace_y].set_title(num_column)
-    
-    counter += 1
-
-plt.show()
-
